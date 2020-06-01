@@ -46,9 +46,9 @@ class Bottleneck(nn.Module):
         self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
         #self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.conv2 = deform_conv.DeformConv2D(planes, planes*2, kernel_size=3, padding=1)
-        self.bn2 = nn.BatchNorm2d(planes*2)
-        self.conv3 = nn.Conv2d(planes*2, self.expansion*planes*2, kernel_size=1, bias=False)
+        self.conv2 = deform_conv.DeformConv2D(planes, planes, kernel_size=3, padding=1)
+        self.bn2 = nn.BatchNorm2d(planes)
+        self.conv3 = nn.Conv2d(planes, self.expansion*planes, kernel_size=1, bias=False)
         self.bn3 = nn.BatchNorm2d(self.expansion*planes)
 
         self.shortcut = nn.Sequential()
@@ -62,7 +62,7 @@ class Bottleneck(nn.Module):
         out = F.relu(self.bn1(self.conv1(x)))
         out = F.relu(self.bn2(self.conv2(out)))
         out = self.bn3(self.conv3(out))
-        out += self.shortcut(x)
+        out += self.shortcut(x * 2)
         out = F.relu(out)
         return out
 
