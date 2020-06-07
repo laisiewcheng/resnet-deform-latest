@@ -52,6 +52,7 @@ class Bottleneck(nn.Module):
         self.bn3 = nn.BatchNorm2d(self.expansion*planes)
 
         self.shortcut = nn.Sequential()
+        print("shortcut")
         if stride != 1 or in_planes != self.expansion*planes:
             print("stride: ", stride, "    in_planes: ", in_planes)
             self.shortcut = nn.Sequential(
@@ -60,13 +61,15 @@ class Bottleneck(nn.Module):
             )
 
     def forward(self, x):
+        print("&&&&&&&&&    x: ", x.size())
         out = F.relu(self.bn1(self.conv1(x)))
         out = F.relu(self.bn2(self.conv2(out)))
         out = self.bn3(self.conv3(out))
         print('************OUT BEFORE: ', out.size())
         print('**************X: ', x.size())
-        print('**************X inside: ', x[1])
+        #print('**************X inside: ', x[1])
         #out = out * 2
+        print("self shortcut: ", self.shortcut(x))
         out += self.shortcut(x)
         print('************OUT AFTER: ', out.size())
         out = F.relu(out)
@@ -95,11 +98,17 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
+        print("First Conv")
         out = F.relu(self.bn1(self.conv1(x)))
+        print("Layer1 Resnet")
         out = self.layer1(out)
+         print("Layer2 Resnet")
         out = self.layer2(out)
+         print("Layer3 Resnet")
         out = self.layer3(out)
+         print("Layer4 Resnet")
         out = self.layer4(out)
+         print("Fully Connected Resnet")
         out = F.avg_pool2d(out, 4)
         out = out.view(out.size(0), -1)
         out = self.linear(out)
