@@ -92,6 +92,7 @@ def main():
    
     #can add code to use multi GPU here
     print('Loaded model to device', file = f)
+    print('Loaded model to device')
     
     #add code here to resume from a checkpoint
         
@@ -149,7 +150,7 @@ def main():
     
     #for training process
     for epoch in range(args.start_epoch, args.epochs):
-        
+        print("Start Training")
         #for each epoch
         print('current lr {:.5e}'.format(optimizer.param_groups[0]['lr']), file = f)
         print('Start Training Epoch: ', epoch)
