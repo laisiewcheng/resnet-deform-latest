@@ -113,7 +113,7 @@ def main():
                     normalize,
                     ]), download = True),
             batch_size = args.batch_size, shuffle = True,
-            num_workers = args.workers, pin_memory = True)
+            num_workers = args.workers, pin_memory = False)
         
     #setting for validation dataset
     val_loader = torch.utils.data.DataLoader(
@@ -122,7 +122,7 @@ def main():
                     normalize,
                     ])),
         batch_size = 128, shuffle = False,
-        num_workers = args.workers, pin_memory = True)
+        num_workers = args.workers, pin_memory = False)
         
         
     #define loss function and optimizer
