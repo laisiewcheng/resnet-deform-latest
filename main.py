@@ -88,7 +88,8 @@ def main():
     #model = resnet.ResNet(101, 10)
     model = resnet.ResNet101()
     #model = torch.hub.load('pytorch/vision:v0.6.0', 'resnet101', pretrained=False)
-    model = model.to(device)
+    #model = model.to(device)
+    model = nn.DataParallel(model)
    
     #can add code to use multi GPU here
     print('Loaded model to device', file = f)
