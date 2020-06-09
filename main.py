@@ -72,8 +72,8 @@ def main():
         
     #check if gpu or cpu
     if torch.cuda.is_available():
-        #device = 'cuda'
-        device = torch.device("cuda:1")
+        device = 'cuda'
+        #device = torch.device("cuda:1")
         print('Use GPU', file = f)
     else:
         device = 'cpu'
@@ -89,8 +89,13 @@ def main():
     #model = resnet.ResNet(101, 10)
     model = resnet.ResNet101()
     #model = torch.hub.load('pytorch/vision:v0.6.0', 'resnet101', pretrained=False)
-    #model = model.to(device)
+    if torch.cuda.device_count() > 1:
+        print("Let's use", torch.cuda.device_count(), "GPUs!")
+    # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+
     model = nn.DataParallel(model)
+    model = model.to(device)
+   
    
     #can add code to use multi GPU here
     print('Loaded model to device', file = f)
