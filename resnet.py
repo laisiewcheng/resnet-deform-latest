@@ -56,24 +56,24 @@ class Bottleneck(nn.Module):
         self.shortcut = nn.Sequential()
         #print("shortcut")
         if stride != 1 or in_planes != self.expansion*planes:
-            print("stride: ", stride, "    in_planes: ", in_planes)
+            #print("stride: ", stride, "    in_planes: ", in_planes)
             self.shortcut = nn.Sequential(
                 nn.Conv2d(in_planes, self.expansion*planes, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(self.expansion*planes)
             )
 
     def forward(self, x):
-        print("&&&&&&&&&    x: ", x.size())
+        #print("&&&&&&&&&    x: ", x.size())
         out = F.relu(self.bn1(self.conv1(x)))
         out = F.relu(self.bn2(self.conv2(out)))
         out = self.bn3(self.conv3(out))
-        print('************OUT BEFORE: ', out.size())
-        print('**************X: ', x.size())
+        #print('************OUT BEFORE: ', out.size())
+        #print('**************X: ', x.size())
         #print('**************X inside: ', x[1])
         #out = out * 2
         #print("self shortcut: ", self.shortcut(x))
         out += self.shortcut(x)
-        print('************OUT AFTER: ', out.size())
+        #print('************OUT AFTER: ', out.size())
         out = F.relu(out)
         return out
 

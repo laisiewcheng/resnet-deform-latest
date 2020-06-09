@@ -18,7 +18,7 @@ class DeformConv2D(nn.Module):
         self.stride = stride
         self.zero_padding = nn.ZeroPad2d(padding)
         
-        print('inc: ', inc, '      outc: ', outc)
+        #print('inc: ', inc, '      outc: ', outc)
 
         #convolution to generate offset
         self.offset_conv = nn.Conv2d(inc, 2 * kernel_size * kernel_size, kernel_size=3, padding=1, stride=stride)
@@ -32,7 +32,7 @@ class DeformConv2D(nn.Module):
 
     def _set_lr(self, module, grad_input, grad_output):
         # print('grad input:', grad_input)
-        print('BACKWARD HOOK FUNCTION SET_LR')
+        #print('BACKWARD HOOK FUNCTION SET_LR')
         new_grad_input = []
 
         for i in range(len(grad_input)):
@@ -46,16 +46,16 @@ class DeformConv2D(nn.Module):
         return new_grad_input
 
     def forward(self, x):
-        print('DEFORM CONV 2D START')
-        print('deform x: ', x.size())
+        #print('DEFORM CONV 2D START')
+        #print('deform x: ', x.size())
         offset = self.offset_conv(x)
-        print('offset size: ', offset.size())
+        #print('offset size: ', offset.size())
         dtype = offset.data.type()
-        print('dtype: ', dtype)
+        #print('dtype: ', dtype)
         ks = self.kernel_size
-        print('ks: ', ks)
+        #print('ks: ', ks)
         N = offset.size(1) // 2
-        print('N: ', N)
+        #print('N: ', N)
         
         #print('offset: ', offset)
 
@@ -159,8 +159,8 @@ class DeformConv2D(nn.Module):
         g_lb = (1 + (q_lb[..., :N].type_as(p) - p[..., :N])) * (1 - (q_lb[..., N:].type_as(p) - p[..., N:]))
         g_rt = (1 - (q_rt[..., :N].type_as(p) - p[..., :N])) * (1 + (q_rt[..., N:].type_as(p) - p[..., N:]))
 
-        print('g_lt size is ', g_lt.size())
-        print('g_lt unsqueeze size:', g_lt.unsqueeze(dim=1).size())
+        #print('g_lt size is ', g_lt.size())
+        #print('g_lt unsqueeze size:', g_lt.unsqueeze(dim=1).size())
 
         # (b, c, h, w, N)
         x_q_lt = self._get_x_q(x, q_lt, N)
@@ -180,13 +180,13 @@ class DeformConv2D(nn.Module):
         """
             x_offset is kernel_size * kernel_size(N) times x. 
         """
-        print('x_offset before reshape: ', x_offset.size())
+        #print('x_offset before reshape: ', x_offset.size())
         x_offset = self._reshape_x_offset(x_offset, ks)
-        print('x_offset after reshape: ', x_offset.size())
+        #print('x_offset after reshape: ', x_offset.size())
         out = self.conv(x_offset)
         
-        print('deform conv 2d out: ', out.size())
-        print('DEFORM CONV 2D END')
+        #print('deform conv 2d out: ', out.size())
+        #print('DEFORM CONV 2D END')
         return out
 
     def _get_p_n(self, N, dtype):
