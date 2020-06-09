@@ -24,7 +24,7 @@ import datetime
 parser = argparse.ArgumentParser(description = 'ResNet101 with CIFAR10 PyTorch')
 parser.add_argument('--epochs', default=1, type=int, metavar='N',
                     help='number of total epochs to run')
-parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
+parser.add_argument('--start-epoch', default=4, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
@@ -88,6 +88,7 @@ def main():
     #model = resnet_deform.ResNet101()
     #model = resnet.ResNet(101, 10)
     model = resnet.ResNet101()
+    #model = resnet.ResNet50()
     #model = torch.hub.load('pytorch/vision:v0.6.0', 'resnet101', pretrained=False)
     if torch.cuda.device_count() > 1:
         print("Let's use", torch.cuda.device_count(), "GPUs!")
@@ -119,7 +120,7 @@ def main():
                     normalize,
                     ]), download = True),
             batch_size = args.batch_size, shuffle = True,
-            num_workers = args.workers, pin_memory = False)
+            num_workers = args.workers, pin_memory = True)
         
     #setting for validation dataset
     val_loader = torch.utils.data.DataLoader(
@@ -128,7 +129,7 @@ def main():
                     normalize,
                     ])),
         batch_size = 128, shuffle = False,
-        num_workers = args.workers, pin_memory = False)
+        num_workers = args.workers, pin_memory = True)
         
         
     #define loss function and optimizer
