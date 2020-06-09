@@ -87,8 +87,9 @@ def main():
     #load model ResNet101 to device
     #model = resnet_deform.ResNet101()
     #model = resnet.ResNet(101, 10)
-    model = resnet.ResNet101()
+    #model = resnet.ResNet101()
     #model = resnet.ResNet50()
+    model = resnet.ResNet18()
     #model = torch.hub.load('pytorch/vision:v0.6.0', 'resnet101', pretrained=False)
     if torch.cuda.device_count() > 1:
         print("Let's use", torch.cuda.device_count(), "GPUs!")

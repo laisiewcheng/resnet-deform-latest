@@ -20,7 +20,8 @@ class BasicBlock(nn.Module):
         super(BasicBlock, self).__init__()
         self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=1, padding=1, bias=False)
+        #self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=1, padding=1, bias=False)
+        self.conv2 = deform_conv.DeformConv2D(planes, planes, kernel_size=3, bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
 
         self.shortcut = nn.Sequential()
@@ -48,7 +49,7 @@ class Bottleneck(nn.Module):
         self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
         #self.conv2 = deform_conv.DeformConv2D(planes, planes, kernel_size=3, padding=1)
         self.bn2 = nn.BatchNorm2d(planes)
-        self.conv3 = deform_conv.DeformConv2D(planes, planes, kernel_size=1, padding=1, bias=False)
+        self.conv3 = deform_conv.DeformConv2D(planes, self.expansion*planes, kernel_size=1, bias=False)
         #self.conv3 = nn.Conv2d(planes, self.expansion*planes, kernel_size=1, bias=False)
         self.bn3 = nn.BatchNorm2d(self.expansion*planes)
 
@@ -117,12 +118,15 @@ class ResNet(nn.Module):
 
 
 def ResNet18():
+    print("Using Model Resnet18");
     return ResNet(BasicBlock, [2,2,2,2])
 
 def ResNet34():
+    print("Using Model Resnet34");
     return ResNet(BasicBlock, [3,4,6,3])
 
 def ResNet50():
+    print("Using Model Resnet50");
     return ResNet(Bottleneck, [3,4,6,3])
 
 def ResNet101():
