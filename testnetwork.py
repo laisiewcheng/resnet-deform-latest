@@ -10,12 +10,12 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-from deform_conv import deform_conv
+import deform_conv
 
 class PlainNet(nn.Module):
     def __init__(self):
         super(PlainNet, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
         self.bn1 = nn.BatchNorm2d(32)
 
         self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
@@ -49,7 +49,7 @@ class PlainNet(nn.Module):
 class DeformNet(nn.Module):
     def __init__(self):
         super(DeformNet, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
         self.bn1 = nn.BatchNorm2d(32)
 
         self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
@@ -61,7 +61,9 @@ class DeformNet(nn.Module):
         self.conv4 = deform_conv.DeformConv2D(128, 128, kernel_size=3, padding=1)
         self.bn4 = nn.BatchNorm2d(128)
 
+        #self.classifier = nn.Linear(128, 10)
         self.classifier = nn.Linear(128, 10)
+
 
     def forward(self, x):
         # convs
@@ -75,7 +77,12 @@ class DeformNet(nn.Module):
         x = F.relu(self.conv4(x))
         x = self.bn4(x)
 
-        x = F.avg_pool2d(x, kernel_size=28, stride=1).view(x.size(0), -1)
+        x = F.avg_pool2d(x, 4)
+        x = x.view(x.size(0), -1)
         x = self.classifier(x)
+
+
+        #x = F.avg_pool2d(x, kernel_size=28, stride=1).view(x.size(0), -1)
+        #x = self.classifier(x)
 
         return F.log_softmax(x, dim=1)
