@@ -80,9 +80,11 @@ class DeformNet(nn.Module):
         x = F.avg_pool2d(x, 4)
         x = x.view(x.size(0), -1)
         x = self.classifier(x)
+        
+        return x
 
 
         #x = F.avg_pool2d(x, kernel_size=28, stride=1).view(x.size(0), -1)
         #x = self.classifier(x)
 
-        return F.log_softmax(x, dim=1)
+        #return F.log_softmax(x, dim=1)
