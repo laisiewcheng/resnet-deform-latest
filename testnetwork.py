@@ -15,16 +15,16 @@ import deform_conv
 class PlainNet(nn.Module):
     def __init__(self):
         super(PlainNet, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1, bias = False)
         self.bn1 = nn.BatchNorm2d(32)
 
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1, bias = False)
         self.bn2 = nn.BatchNorm2d(64)
 
-        self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1, bias = False)
         self.bn3 = nn.BatchNorm2d(128)
 
-        self.conv4 = nn.Conv2d(128, 128, kernel_size=3, padding=1)
+        self.conv4 = nn.Conv2d(128, 128, kernel_size=3, padding=1, bias = False)
         self.bn4 = nn.BatchNorm2d(128)
 
         self.classifier = nn.Linear(128, 10)
