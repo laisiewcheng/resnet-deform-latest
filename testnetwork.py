@@ -39,15 +39,15 @@ class PlainNet(nn.Module):
         x = self.bn3(x)
         x = F.relu(self.conv4(x))
         x = self.bn4(x)
-        print("x1: ", x.size())
-        x = F.avg_pool2d(x, 4)
-        print("x2: ", x.size())
+        #print("x1: ", x.size())
+        x = F.avg_pool2d(x, 28)
+        #print("x2: ", x.size())
         x = x.view(x.size(0), -1)
        
         #x = F.avg_pool2d(x, kernel_size=28, stride=1).view(x.size(0), -1)
-        print("x3: ", x.size())
+        #print("x3: ", x.size())
         x = self.classifier(x)
-        print("x4: ", x.size())
+        #print("x4: ", x.size())
         return F.log_softmax(x, dim=1)
 
 
@@ -82,11 +82,22 @@ class DeformNet(nn.Module):
         x = F.relu(self.conv4(x))
         x = self.bn4(x)
 
-        x = F.avg_pool2d(x, 4)
+#        x = F.avg_pool2d(x, 28)
+#        x = x.view(x.size(0), -1)
+#        x = self.classifier(x)
+#        
+#        return F.log_softmax(x, dim=1)
+    
+        x = F.avg_pool2d(x, 28)
+        #print("x2: ", x.size())
         x = x.view(x.size(0), -1)
+       
+        #x = F.avg_pool2d(x, kernel_size=28, stride=1).view(x.size(0), -1)
+        #print("x3: ", x.size())
         x = self.classifier(x)
-        
-        return x
+        #print("x4: ", x.size())
+        return F.log_softmax(x, dim=1)
+
 
 
         #x = F.avg_pool2d(x, kernel_size=28, stride=1).view(x.size(0), -1)
