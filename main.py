@@ -90,7 +90,7 @@ def main():
     #model = resnet.ResNet(101, 10)
     #model = resnet.ResNet101()
     #model = testnetwork.DeformNet()
-    model = testnetwork.plainNet()
+    model = testnetwork.PlainNet()
     #model = resnet.ResNet50()
     #model = resnet.ResNet18()
     #model = torch.hub.load('pytorch/vision:v0.6.0', 'resnet101', pretrained=False)
@@ -225,6 +225,7 @@ def train(train_loader, model, criterion, optimizer, epoch):
             target_var = target
         
         #compute output - need to load input to model ResNet101
+        print("input size: ", input_var.size())
         output = model(input_var) #load input to model
         
         #calculate loss - compute difference targeted output with actual output (output)

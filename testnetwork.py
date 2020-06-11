@@ -41,8 +41,9 @@ class PlainNet(nn.Module):
         x = self.bn4(x)
 
         x = F.avg_pool2d(x, kernel_size=28, stride=1).view(x.size(0), -1)
+        print("x before: ", x.size())
         x = self.classifier(x)
-
+        print("x after: ", x.size())
         return F.log_softmax(x, dim=1)
 
 
